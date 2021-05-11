@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- name태그 -->
+<head th:replace="/fragments/default :: head(|${board} Select|)">
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<!-- header -->
+	<div th:replace="/fragments/default :: header"></div>
+	<!-- jumbotron -->
+	<div th:replace="/fragments/default :: jumbotron"></div>
+	
+	<div class="container">
+		<h2 th:text="${board}"></h2>
+		
+		<table class="table">
+		  <thead class="thead-dark">
+		    <tr>
+		      <th scope="col">Num</th>
+		      <th scope="col">Title</th>
+		      <th scope="col">Writer</th>
+		      <th scope="col">Date</th>
+		      <th scope="col">Hit</th>      
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <th scope="row" th:text="${vo.num}"></th>
+		      <td th:text="${vo.title}">Mark</td>
+		      <td th:text="${vo.writer}">Otto</td>
+		      <td th:text="${vo.regDate}">@mdo</td>
+		      <td th:text="${vo.hit}"></td>
+		    </tr>
+		  </tbody>
+		</table>
+		<div th:text="${vo.contents}"></div>
+		
+		<a type="button" class="btn btn-primary" th:href="@{update(num=${vo.num})}">수정</a>
+		<a type="button" class="btn btn-danger" th:href="@{delete(num=${vo.num})}">삭제</a>
+		
+	</div>
+	
+
+	<!-- footer -->
+	<div th:replace="/fragments/default :: footer"></div>
+
+</body>
+</html>

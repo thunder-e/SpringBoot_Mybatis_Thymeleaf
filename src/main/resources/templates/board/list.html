@@ -9,9 +9,54 @@
 	<div th:replace="/fragments/default :: header"></div>
 	<!-- jumbotron -->
 	<div th:replace="/fragments/default :: jumbotron"></div>
-	<!-- /member/memberJoin -->
-	<!-- com....member.MemberController.setJoin -->
-	<h1 th:text="${board}">Page</h1>
+	
+	<div class="container">
+		<h2 th:text="${board}"></h2>
+		
+		<table class="table">
+		  <thead class="thead-dark">
+		    <tr>
+		      <th scope="col">Num</th>
+		      <th scope="col">Title</th>
+		      <th scope="col">Writer</th>
+		      <th scope="col">Date</th>
+		      <th scope="col">Hit</th>
+		      <th scope="col">Index</th>		      
+		      <th scope="col">Count</th>		      
+		      <th scope="col">Size</th>		      
+		      <th scope="col">even</th>		      
+		      <th scope="col">odd</th>		      
+		      <th scope="col">first</th>		      
+		      <th scope="col">last</th>		      
+		      <!-- <th scope="col">Current</th> -->		      
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr th:each="vo, state : ${list}">
+		      <th scope="row" th:text="${vo.num}"></th>
+		      <!-- td에 th:text를 주게 되면 그 안에 a태그까지 text로 덮어씌우기 때문에 제일 안쪽 태그에 넣어야 필요한 태그가 없어지지 않음 -->
+		      			<!-- th:href="@{|${board}select|}" : noticeselect or qnaselect  -->
+		      			<!-- parameter 전송 -- @{URL주소(파라미터명=값, 파라미터명2=값2,...)} -->
+		      <td><a href="#" th:href="@{select(num=${vo.num})}" th:text="${vo.title}">Mark</a></td>  <!-- th:href="@{./select}"  -> ./없어도 현재위치에서  -->
+		      <td th:text="${vo.writer}">Otto</td>
+		      <td th:text="${vo.regDate}">@mdo</td>
+		      <td th:text="${vo.hit}"></td>
+		      <td th:text="${state.index}"></td> <!-- 인덱스 번호 - 0 부터 시작-->
+		      <td th:text="${state.count}"></td> <!-- 횟수 번호 - 1 부터 시작 -->
+		      <td th:text="${state.size}"></td> <!-- 총 갯수 - list의 size와 같음 -->
+		      <td th:text="${state.even}"></td> <!-- 현재 반복의 짝수 여부 - boolean타입 -->
+		      <td th:text="${state.odd}"></td> <!-- 현재 반복의 홀수 여부 - boolean타입 -->
+		      <td th:text="${state.first}"></td> <!-- 현재 반복이 첫번째 여부 -->
+		      <td th:text="${state.last}"></td> <!-- 현재 반복이 마지막 여부 -->
+		      <!-- <td th:text="${state.current}"></td> --> <!-- 현재 요소 -->
+		      
+		    </tr>
+		  </tbody>
+		</table>
+		
+	</div>
+	
+
 	<!-- footer -->
 	<div th:replace="/fragments/default :: footer"></div>
 
