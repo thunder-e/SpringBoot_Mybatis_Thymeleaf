@@ -9,5 +9,6 @@ import com.sw.s1.board.BoardMapper;
 public interface NoticeMapper extends BoardMapper{
 	//getList()
 	//getSelect()
+	//setInsert()
 	
 }

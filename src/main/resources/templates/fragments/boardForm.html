@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- name태그 -->
+<head th:replace="/fragments/default :: head(|${board} ${act}|)">
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<!-- header -->
+	<div th:replace="/fragments/default :: header"></div>
+	<!-- jumbotron -->
+	<div th:replace="/fragments/default :: jumbotron"></div>
+	
+	<div class="container">
+	<!-- form 받아올때 act를 받아옴 -->
+	<div th:fragment="form (act)">
+	<h1 th:text="|board ${act}|">Board </h1>
+	<form id="frm" th:action="@{${act}}" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="num" th:value="${vo.num}">
+		
+		  <div class="form-group">
+		    <label for="writer">Writer</label>
+		    <input type="text" th:value="${vo.writer}" class="form-control myCheck" id="writer" name="writer">
+		  </div>
+		  <div class="form-group">
+		    <label for="exampleInputPassword1">Title</label>
+		    <input type="text" th:value="${vo.title}" class="form-control myCheck" id="title" name="title">
+		  </div>
+		  <div class="form-group">
+		    <label for="contents">Contents</label>
+		    <textarea th:text="${vo.contents}" class="form-control myCheck" rows="5" id="contents" name="contents"></textarea>
+		  </div>
+		  
+		  <div>
+		  	
+		  	<div>
+		  		<input type="file" name="files">
+		  		<input type="file" name="files">
+		  	</div>
+		  	
+		  	
+		  </div>
+	
+		  <button type="submit" th:text="${act}" class="btn btn-primary">Update</button>
+	</form>
+	</div>
+		
+	</div>
+	
+
+	<!-- footer -->
+	<div th:replace="/fragments/default :: footer"></div>
+
+</body>
+</html>

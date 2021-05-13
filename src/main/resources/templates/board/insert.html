@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- name태그 -->
+<head th:replace="/fragments/default :: head(|${board} write|)">
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<!-- header -->
+	<div th:replace="/fragments/default :: header"></div>
+	<!-- jumbotron -->
+	<div th:replace="/fragments/default :: jumbotron"></div>
+	
+	<div class="container">
+	<h1>Board Insert</h1>
+	<form id="frm" action="./insert" method="post">
+	  <div class="form-group">
+	    <label for="writer">Writer</label>
+	    <input type="text" class="form-control myCheck" id="writer" name="writer">
+	  </div>
+	  <div class="form-group">
+	    <label for="exampleInputPassword1">Title</label>
+	    <input type="text" class="form-control myCheck" id="title" name="title">
+	  </div>
+	  <div class="form-group">
+	    <label for="contents">Contents</label>
+	    <textarea class="form-control myCheck" rows="5" id="contents" name="contents"></textarea>
+	  </div>
+
+	  <button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+		
+	</div>
+	
+
+	<!-- footer -->
+	<div th:replace="/fragments/default :: footer"></div>
+
+</body>
+</html>

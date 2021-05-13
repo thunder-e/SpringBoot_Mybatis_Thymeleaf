@@ -33,10 +33,18 @@
 		    </tr>
 		  </tbody>
 		</table>
-		<div th:text="${vo.contents}"></div>
+		<!-- utext : HTML 문법을 적용한 텍스트 -->
+		<div th:utext="${vo.contents}"></div>
 		
-		<a type="button" class="btn btn-primary" th:href="@{update(num=${vo.num})}">수정</a>
-		<a type="button" class="btn btn-danger" th:href="@{delete(num=${vo.num})}">삭제</a>
+		
+		<!-- 변수명, collection -->
+		<p th:each="fileVO : ${vo.files}">
+			<a th:href="@{|/upload/${board}/${fileVO.fileName}|}" th:text="${fileVO.oriName}"></a>
+		</p>
+		
+		
+		<a type="button" class="btn btn-success" th:href="@{update(num=${vo.num})}">Update</a>
+		<a type="button" class="btn btn-danger" th:href="@{delete(num=${vo.num})}">Delete</a>
 		
 	</div>
 	
