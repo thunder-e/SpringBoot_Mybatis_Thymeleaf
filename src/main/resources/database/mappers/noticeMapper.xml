@@ -62,7 +62,7 @@
     		update notice set hit=hit+1 where num=#{num}
     	</update>
     	
-    	<!--insert하기 전에 autoIncreament로 증가된 값을 먼저 받아서 BoardVO num에 넣겠다 -->
+    	<!--insert하기 전에 AutoIncreament로 증가된 값을 먼저 받아서 BoardVO num에 넣겠다 -->
     	<insert id="setInsert" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="num">
     		insert into notice values (#{num}, #{title}, #{writer}, #{contents}, now(), 0)
     	</insert>

@@ -30,11 +30,28 @@ public class NoticeController {
 		return "notice";
 	}
 	
+	// /notice/fileDown
+	@GetMapping("fileDown")
+	public ModelAndView fileDown(String fileName, String oriName) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("fileName", fileName);
+		mv.addObject("oriName", oriName);
+		mv.addObject("filePath", "/upload/notice/");
+		
+		// view의 이름은 Bean의 이름과 일치
+		mv.setViewName("fileDown");
+		// /fileDown.html 
+		return mv;
+	}
+	
+	// /notice/list
 	@GetMapping("list")
 	public String getList(Model model, Pager pager) throws Exception {
 		List<BoardVO> ar = noticeService.getList(pager);
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
+		
+		// /board/list.html
 		return "board/list";
 	}
 	
