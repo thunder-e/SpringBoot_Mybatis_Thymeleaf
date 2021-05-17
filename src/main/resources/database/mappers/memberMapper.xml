@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.sw.s1.member.MemberMapper">
+    	<insert id="setJoin" parameterType="MemberVO">
+    		INSERT INTO member VALUES (#{username},#{password},#{name},#{email}, #{phone})
+    	</insert>
+    	
+    	<select id="setLogin" parameterType="MemberVO" resultMap="loginResult">
+    		select M.*, MF.* 
+    		from member M left join memberFile MF
+    		on M.username = MF.username
+    		where M.username=#{username} and M.password=#{password}
+    	</select>
+    	
+    	<resultMap type="MemberVO" id="loginResult">
+    		<id property="username" column="username"/>
+    		<result property="password" column="password"/>
+    		<result property="name" column="name"/>
+    		<result property="email" column="email"/>
+    		<result property="phone" column="phone"/>
+    		<collection property="file" javaType="MemberFileVO" ofType="MemberFileVO">
+    			<id property="fileNum" column="fileNum"/>
+    			<result property="fileName" column="fileName"/>
+				<result property="oriName" column="oriName"/>    		
+    		</collection>
+    	</resultMap>
+    	
+    	<insert id="setFileInsert" parameterType="MemberFileVO">
+    		insert into memberFile (fileNum, username, fileName, oriName)
+    		values (#{fileNum}, #{username}, #{fileName}, #{oriName})
+    	</insert>
+    
+    
+    </mapper>

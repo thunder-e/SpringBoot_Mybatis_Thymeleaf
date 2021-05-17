@@ -5,6 +5,8 @@
   
   <configuration>
   	<typeAliases>
+  		<typeAlias type="com.sw.s1.member.MemberVO" alias="MemberVO"/>
+  		<typeAlias type="com.sw.s1.member.MemberFileVO" alias="MemberFileVO"/>
   		<typeAlias type="com.sw.s1.board.BoardVO" alias="BoardVO"/>
   		<typeAlias type="com.sw.s1.board.BoardFileVO" alias="BoardFileVO"/>
   		<typeAlias type="com.sw.s1.board.notice.NoticeVO" alias="NoticeVO"/>

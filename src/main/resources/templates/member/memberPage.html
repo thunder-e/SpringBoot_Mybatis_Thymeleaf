@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"> <!-- name태그 -->
+<head th:replace="/fragments/default :: head('Member Join')">
+<meta charset="UTF-8">
+<title>Member Join</title>
+</head>
+<body>
+	<!-- header -->
+	<div th:replace="/fragments/default :: header"></div>
+	<!-- jumbotron -->
+	<div th:replace="/fragments/default :: jumbotron"></div>
+	<!-- /member/memberJoin -->
+	<!-- com....member.MemberController.setJoin -->
+	
+	
+	
+	<div class="container">
+	<h1>My Page</h1>
+
+	<h3 th:text="${member.username}">ID : ${member.id}</h3> <!-- session에 있는(login할때 담아둠) -->
+	<h3>Name : ${member.name}</h3>
+	<h3>Phone : ${member.phone}</h3>
+	<h3>Email : ${member.email}</h3>
+	<h3><img alt="" src="../resources/upload/member/${member.memberFileDTO.fileName}"></h3> <!-- session에 "member"라는 이름으로 memberDTO를 넘겨줬음 -->
+
+
+	</div>
+	
+	
+	
+	
+	<!-- footer -->
+	<div th:replace="/fragments/default :: footer"></div>
+
+</body>
+</html>
