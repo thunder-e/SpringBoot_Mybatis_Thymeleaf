@@ -18,20 +18,22 @@ public class MemberController {
 	private MemberService memberService;
 	
 	@GetMapping("login")
-	public String setLogin() throws Exception {
+	public String getLogin() throws Exception {
 		return "member/memberLogin";
 	}
 	
 	@PostMapping("login")
-	public String setLogin(MemberVO memberVO, HttpSession session) throws Exception{
-		memberVO = memberService.setLogin(memberVO);
-		System.out.println(memberVO);
+	public String getLogin(MemberVO memberVO, HttpSession session) throws Exception{
+		memberVO = memberService.getLogin(memberVO);
+		
+		if(memberVO != null) {
 		session.setAttribute("member", memberVO);
-		return "redirect:../";
+		}
+		return "redirect:/";
 	}
 
 	@GetMapping("logout")
-	public String setLogout(HttpSession session)throws Exception{
+	public String logout(HttpSession session)throws Exception{
 		session.invalidate();
 		return "redirect:../";
 	}
@@ -43,21 +45,17 @@ public class MemberController {
 	}
 	
 	@PostMapping("join")
-	public String setJoin(MemberVO memberVO, MultipartFile file, HttpSession session, Model model) throws Exception{
-		int result = memberService.setJoin(memberVO,file,session);
-		
-		System.out.println(file.getName());
-		System.out.println(file.getOriginalFilename());
-		System.out.println(file.getSize());
-		System.out.println(file.isEmpty());
+	public String setJoin(MemberVO memberVO, MultipartFile avatar) throws Exception{
+		int result = memberService.setJoin(memberVO, avatar);
 		
 		return "redirect:../";
 	}
 	
 	
-	@GetMapping("memberPage")
-	public void getMyPage()throws Exception{
-		
+	@GetMapping("page")
+	public String getMyPage(HttpSession session)throws Exception{
+
+		return "member/memberPage";
 	}
 	
 }

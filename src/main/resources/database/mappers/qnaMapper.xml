@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.sw.s1.board.qna.QnaMapper">
+    	<sql id="searcher">
+    	<!-- 공통으로 사용하는 sql문 -->
+    		<where>
+				<choose>
+				<when test="kind=='Writer'">
+					writer like concat('%', #{search}, '%')
+				</when>
+				
+				<when test="kind=='Contents'">
+					contents like concat('%', #{search}, '%')
+				</when>
+				
+				<otherwise>
+					title like concat('%', #{search}, '%')
+				</otherwise>
+				</choose>
+			</where>
+    	</sql>
+    
+    	<select id="getList" resultType="QnaVO" parameterType="Pager">
+			select * from qna 
+			<include refid="searcher"></include>
+			order by ref desc, step asc
+			limit #{startRow}, #{perPage}
+			<!-- limit 시작index번호(0부터시작), 갯수 -->
+    	</select>
+    	
+    	<select id="getTotalCount" resultType="Long" parameterType="Pager">
+			select count(num) from qna
+			<include refid="searcher"></include>
+		</select>
+    	
+    	<select id="getSelect" parameterType="BoardVO" resultMap="selectResult">
+			SELECT N.*, NF.* 
+			FROM qna N LEFT JOIN qnaFiles NF
+			ON N.num = NF.num
+			WHERE N.num=#{num}
+    	</select>
+    	
+    	<resultMap type="qnaVO" id="selectResult">
+    		<id property="num" column="num"/>
+    		<result property="title" column="title"/>
+    		<result property="writer" column="writer"/>
+    		<result property="contents" column="contents"/>
+    		<result property="regDate" column="regDate"/>
+    		<result property="hit" column="hit"/>
+    		<result property="ref" column="ref"/>
+    		<result property="step" column="step"/>
+    		<result property="depth" column="depth"/>
+    		<collection property="files" javaType="java.util.List" ofType="BoardFileVO">
+	    		<id property="fileNum" column="filenum"/>
+	    		<result property="fileName" column="filename"/>
+	    		<result property="oriName" column="oriname"/>	
+    		</collection>
+    	</resultMap>
+   
+    	
+    	<update id="setHitUpdate" parameterType="BoardVO">
+    		update qna set hit=hit+1 where num=#{num}
+    	</update>
+    	
+    	<!--insert하기 전에 AutoIncreament로 증가된 값을 먼저 받아서 BoardVO num에 넣겠다 -->
+    	<!-- useGeneratedKeys는 나중에 실행됨 -->
+    	<insert id="setInsert" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="num">
+    		insert into qna(
+    						 title
+    						,writer
+    						,contents
+    						,ref
+    						)
+    					values(
+    						 #{title}
+    						,#{writer}
+    						,#{contents}
+    						,0
+    						)
+    	</insert>
+    	
+    	<update id="setRefUpdate" parameterType="BoardVO">
+    		update qna set ref=#{num} where num=#{num}
+    	</update>
+    	
+    	<update id="setReplyUpdate" parameterType="BoardVO">
+    		update qna set step=step+1 
+    		where 
+    		ref = (select ref from qna where num=#{num})
+    		and 
+    		step > (select step from qna where num=#{num})
+    	</update>
+    	
+		<!-- 부모의 글번호가 BoardVO num으로 들어가 있는 상태 -->
+		<insert id="setReplyInsert" parameterType="BoardVO" useGeneratedKeys="true" keyProperty="num">
+			insert into qna (title, writer, contents, ref, step, depth) 
+			values (#{title}, #{writer}, #{contents}, 
+				(select ref from qna Q where num=#{num}),
+			 	(select step+1 from qna Q where num=#{num}),
+			 	(select depth+1 from qna Q where num=#{num})
+			 )
+		</insert>
+
+    	<insert id="setFileInsert" parameterType="BoardFileVO">
+    		insert into qnaFiles (num, filename, oriname) 
+    		values (#{num}, #{fileName}, #{oriName})
+    	</insert>
+    	
+    	<update id="setUpdate" parameterType="BoardVO">
+    		update qna set title=#{title}, contents=#{contents} where num=#{num}
+    	</update>
+    	
+		<delete id="setDelete" parameterType="BoardVO">
+			delete from qna where num=#{num}
+		</delete>
+		
+
+    
+    </mapper>

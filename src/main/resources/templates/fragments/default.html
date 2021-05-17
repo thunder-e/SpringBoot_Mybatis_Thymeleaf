@@ -23,7 +23,13 @@
 				</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/notice/list}" href="#">Notice</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/qna/list}" href="#">QnA</a></li>
-								
+			</ul>
+			
+			<ul th:if="${session.member != null}" class="navbar-nav mr-auto mt-2 mt-lg-0">
+				<li class="nav-item"><a class="nav-link" th:href="@{/member/page}" href="#">MyPage</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/member/logout}" href="#">Logout</a></li>
+			</ul>
+			<ul th:unless="${session.member != null}"  class="navbar-nav mr-auto mt-2 mt-lg-0">
 				<li class="nav-item"><a class="nav-link" th:href="@{/member/join}" href="#">Join</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/member/login}" href="#">Login</a></li>
 			</ul>

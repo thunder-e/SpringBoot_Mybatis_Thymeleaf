@@ -8,10 +8,10 @@ public interface MemberMapper {
 	//join
 	public int setJoin(MemberVO memberVO) throws Exception;
 	//file insert
-	public int setFileInsert(MemberFileVO memberFileVO) throws Exception;
+	public int setJoinFile(MemberFileVO memberFileVO) throws Exception;
 	
 	//login
-	public MemberVO setLogin(MemberVO memberVO)throws Exception;
+	public MemberVO getLogin(MemberVO memberVO)throws Exception;
 	
 
 

@@ -10,6 +10,8 @@
   		<typeAlias type="com.sw.s1.board.BoardVO" alias="BoardVO"/>
   		<typeAlias type="com.sw.s1.board.BoardFileVO" alias="BoardFileVO"/>
   		<typeAlias type="com.sw.s1.board.notice.NoticeVO" alias="NoticeVO"/>
+  		<typeAlias type="com.sw.s1.board.qna.QnaVO" alias="QnaVO"/>
+  		
   		<typeAlias type="com.sw.s1.util.Pager" alias="Pager"/>
   	</typeAliases>
   

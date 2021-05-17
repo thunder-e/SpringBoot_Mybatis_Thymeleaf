@@ -17,11 +17,11 @@
 	<div class="container">
 	<h1>My Page</h1>
 
-	<h3 th:text="${member.username}">ID : ${member.id}</h3> <!-- session에 있는(login할때 담아둠) -->
-	<h3>Name : ${member.name}</h3>
-	<h3>Phone : ${member.phone}</h3>
-	<h3>Email : ${member.email}</h3>
-	<h3><img alt="" src="../resources/upload/member/${member.memberFileDTO.fileName}"></h3> <!-- session에 "member"라는 이름으로 memberDTO를 넘겨줬음 -->
+	<h3>ID : ${session.member.username}</h3> <!-- session에 있는(login할때 담아둠) -->
+	<h3>Name : ${session.member.name}</h3>
+	<h3>Phone : ${session.member.phone}</h3>
+	<h3>Email : ${session.member.email}</h3>
+	<!--<h3><img alt="" src="../resources/upload/member/${session.member.avatar.fileName}"></h3>  --> <!-- session에 "member"라는 이름으로 memberDTO를 넘겨줬음 -->
 
 
 	</div>
