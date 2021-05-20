@@ -3,6 +3,7 @@ package com.sw.s1.member;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,12 +19,15 @@ public class MemberService {
 	@Autowired
 	private FileManager fileManager;
 	
+	@Value("${member.filePath}")
+	private String filePath;
+	
 	//join
 	public int setJoin(MemberVO memberVO, MultipartFile multipartFile) throws Exception{
 		//1. Member Table 저장
 		int result = memberMapper.setJoin(memberVO);
 		//2. HDD에 저장
-		String filePath="upload/member/";
+		String filePath=this.filePath;
 		if(multipartFile.getSize() != 0) {
 			String fileName = fileManager.save(multipartFile, filePath); //파일네임을 리턴해줌
 			System.out.println(fileName);

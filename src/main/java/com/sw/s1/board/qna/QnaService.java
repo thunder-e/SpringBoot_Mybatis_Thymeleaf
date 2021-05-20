@@ -3,6 +3,7 @@ package com.sw.s1.board.qna;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,9 @@ import com.sw.s1.util.Pager;
 
 @Service
 public class QnaService implements BoardService {
+
+	@Value("${board.qna.filePath}")
+	private String filePath;
 
 	@Autowired
 	private QnaMapper qnaMapper;
@@ -45,7 +49,7 @@ public class QnaService implements BoardService {
 		result = qnaMapper.setRefUpdate(boardVO);//autoGenerate한 값을 boardVO num에 넣어 놨으니까		
 		
 		//3. File Save
-		String filePath="upload/qna/";
+		String filePath=this.filePath;
 		
 		for(MultipartFile multipartFile : files) {		
 			if(multipartFile.getSize()==0) {
@@ -90,7 +94,7 @@ public class QnaService implements BoardService {
 		result = qnaMapper.setReplyInsert(boardVO);
 		
 		//3. File HDD에 저장
-		String filePath="upload/qna/";
+		String filePath=this.filePath;
 		
 		for(MultipartFile multipartFile : files) {		
 			if(multipartFile.getSize()==0) {

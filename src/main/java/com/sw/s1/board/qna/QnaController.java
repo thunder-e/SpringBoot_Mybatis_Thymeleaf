@@ -3,6 +3,7 @@ package com.sw.s1.board.qna;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,10 @@ import com.sw.s1.util.Pager;
 @RequestMapping("/qna/**")
 public class QnaController {
 	
+	@Value("${board.qna.filePath}")
+	private String filePath;
+	
+	
 	@Autowired
 	private QnaService qnaService;
 	
@@ -27,6 +32,18 @@ public class QnaController {
 		return "qna";			// model.addAttribute("board", "qna") 효과
 		//return new NoticeDTO();  ===> board라는 이름으로 DTO를 하나씩 보낼수도 있음
 	}
+	
+	@GetMapping("fileDown")
+	public ModelAndView fileDown(String fileName, String oriName) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("fileName", fileName);
+		mv.addObject("oriName", oriName);
+		mv.addObject("filePath", filePath);
+		
+		mv.setViewName("fileDown");
+		return mv;
+	}
+	
 	
 	
 	@GetMapping("list")
