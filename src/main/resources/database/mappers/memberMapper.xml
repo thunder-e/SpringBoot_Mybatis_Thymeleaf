@@ -18,8 +18,9 @@
     		select * from member where username=#{username} and password=#{password}
     	</select>
     	
+    	<select id="getUsername" parameterType="MemberVO" resultType="MemberVO">
+    		select * from member where username=#{username}
+    	</select>
 		
-    	
-    
     
     </mapper>
