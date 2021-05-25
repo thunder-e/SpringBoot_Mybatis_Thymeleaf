@@ -5,18 +5,43 @@
     
     <mapper namespace="com.sw.s1.member.MemberMapper">
 		<insert id="setJoin" parameterType="MemberVO">
-			insert into member (username, password, name, email, phone)
-			values (#{username}, #{password}, #{name}, #{email}, #{phone})
+			insert into member (username, password, name, email, phone, enabled)
+			values (#{username}, #{password}, #{name}, #{email}, #{phone}, #{enabled})
 		</insert> 
+		
+		<insert id="setMemberRole" parameterType="java.util.Map">
+			insert into member_role (username, id)
+			values (#{username}, (select id from role where roleName=#{roleName}))
+		</insert>
 		
 		<insert id="setJoinFile" parameterType="MemberFileVO">
 			insert into memberFiles (username, fileName, oriName)
 			values(#{username}, #{fileName}, #{oriName})
 		</insert>
     	
-    	<select id="getLogin" parameterType="MemberVO" resultType="MemberVO">
-    		select * from member where username=#{username} and password=#{password}
+    	<select id="getLogin" parameterType="MemberVO" resultMap="getLoginResult">
+    		SELECT M.*, R.*
+			FROM member M LEFT JOIN member_role MR
+			ON M.username= MR.username
+			INNER JOIN role R
+			ON MR.id=R.id
+			WHERE M.username=#{username}
     	</select>
+    	
+    	<!-- type : 결과물을 MemberVO로 받아올것 -->
+    	<resultMap type="MemberVO" id="getLoginResult">
+    		<id column="username" property="username"/> 
+    		<result column="password" property="password"/>
+    		<result column="name" property="name"/>
+    		<result column="email" property="email"/>
+    		<result column="phone" property="phone"/>
+    		<result column="enabled" property="enabled"/>
+    		<collection property="roles" javaType="java.util.List" ofType="RoleVO">  <!-- property는 type:memberVO의 변수명 -->
+    			<id column="id" property="id"/>
+    			<result column="roleName" property="roleName"/>
+    		</collection>
+    	
+    	</resultMap>
     	
     	<select id="getUsername" parameterType="MemberVO" resultType="MemberVO">
     		select * from member where username=#{username}

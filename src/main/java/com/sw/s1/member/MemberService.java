@@ -4,6 +4,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,16 +15,30 @@ import com.sw.s1.board.BoardFileVO;
 import com.sw.s1.util.FileManager;
 
 @Service
-public class MemberService {
+// Spring Security에서 사용하는 Service (역시 interface형태, 메서드 오버라이딩)
+// UserDetailsService 구현
+public class MemberService implements UserDetailsService{
 	
 	@Autowired
 	private MemberMapper memberMapper;
 	
 	@Autowired
 	private FileManager fileManager;
-	
+		
 	@Value("${member.filePath}")
 	private String filePath;
+	
+	//login 메서드 --> Controller는 Spring이 해줌
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		MemberVO memberVO = new MemberVO();
+		memberVO.setUsername(username);
+		memberVO = memberMapper.getLogin(memberVO);
+		return memberVO;
+	}
+	
+	
+	
 	
 	//검증메서드
 		public boolean memberError(MemberVO memberVO, Errors errors)throws Exception {
@@ -85,9 +102,14 @@ public class MemberService {
 		
 		
 		//login
-		public MemberVO getLogin(MemberVO memberVO) throws Exception {
-			return memberMapper.getLogin(memberVO);
-		}
+		/*
+		 * public MemberVO getLogin(MemberVO memberVO) throws Exception { return
+		 * memberMapper.getLogin(memberVO); }
+		 */
+
+
+		
+		
 		
 
 
