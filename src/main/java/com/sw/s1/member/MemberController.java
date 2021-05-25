@@ -21,10 +21,16 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	@GetMapping("login")
+	@GetMapping("login") //로그인 폼으로 가야하기때문에 살려두고
 	public String getLogin() throws Exception {
 		return "member/memberLogin";
 	}
+	
+	@GetMapping("memberLoginResult") //success 됐을 때
+	public String memberLoginResult()throws Exception{
+		return "redirect:/";
+	}
+	
 	
 	/*
 	 * @PostMapping("login") public String getLogin(MemberVO memberVO, HttpSession
@@ -50,7 +56,7 @@ public class MemberController {
 	public String setJoin(@Valid MemberVO memberVO, Errors errors, MultipartFile avatar) throws Exception{
 		
 		/*
-		 * if(errors.hasErrors()) { return "member/memberJoin"; }
+		  if(errors.hasErrors()) { return "member/memberJoin"; }
 		 */
 		
 		

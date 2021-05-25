@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import com.sw.s1.board.BoardFileVO;
 import com.sw.s1.util.FileManager;
@@ -21,14 +23,15 @@ public class MemberService implements UserDetailsService{
 	
 	@Autowired
 	private MemberMapper memberMapper;
-	
 	@Autowired
 	private FileManager fileManager;
+	@Autowired
+	private PasswordEncoder passwordEncoder; //password 암호화시켜주는 클래스
 		
 	@Value("${member.filePath}")
 	private String filePath;
 	
-	//login 메서드 --> Controller는 Spring이 해줌
+	//login 메서드 --> Controller는 Spring Security가 알아서 해줌, 따로 호출X
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberVO memberVO = new MemberVO();
@@ -68,12 +71,13 @@ public class MemberService implements UserDetailsService{
 			}
 			
 			//admin, administrator, root
+			/*
 			String username = checkMember.getUsername();
 			if(username.equals("admin")||username.equals("administrator")||username.equals("root")) {
 				errors.rejectValue("username", "memberVO.username.admin");
 				result=true;
 			}
-			
+			*/
 			
 			return result;
 		}
@@ -81,6 +85,16 @@ public class MemberService implements UserDetailsService{
 	
 		//join
 		public int setJoin(MemberVO memberVO, MultipartFile multipartFile) throws Exception{
+			//0. 사전작업 (Security 사용)
+			//a. password 암호화
+			memberVO.setPassword(passwordEncoder.encode(memberVO.getPassword()));
+			//b. 사용자 계정 활성화
+			memberVO.setEnabled(true);
+			
+			System.out.println(memberVO.getUsername());
+			System.out.println(memberVO.getPassword());
+			
+			
 			//1. Member Table 저장
 			int result = memberMapper.setJoin(memberVO);
 			//2. HDD에 저장

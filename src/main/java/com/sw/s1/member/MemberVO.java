@@ -24,7 +24,7 @@ public class MemberVO implements UserDetails{
 	private String username;
 	private String password1;
 	
-	@Length(max = 10, min = 6)
+	@Length(max = 10, min = 2)
 	private String password;
 	
 	
