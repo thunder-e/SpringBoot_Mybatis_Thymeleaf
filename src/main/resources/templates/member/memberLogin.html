@@ -14,6 +14,11 @@
 	
 	<div class="container">
 	<h1>Member Login Page</h1>
+	
+	<!-- Error Message -->
+	<h3 th:if="${param.error}">Login Fail</h3>
+	
+	
 		<form action="./login" method="post">
 		  <div class="form-group">
 		    <label for="username">Username</label>

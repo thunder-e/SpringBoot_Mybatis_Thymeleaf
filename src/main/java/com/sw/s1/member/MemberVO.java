@@ -27,7 +27,6 @@ public class MemberVO implements UserDetails{
 	@Length(max = 10, min = 2)
 	private String password;
 	
-	
 	@NotEmpty
 	private String name;
 	
@@ -57,23 +56,26 @@ public class MemberVO implements UserDetails{
 		return authorities;
 	}
 
+	// 만료되지 않은 계정인지
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
+	// lock걸지 않겠습니다
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
+	
 	
 	
 	

@@ -1,5 +1,8 @@
 package com.sw.s1.member;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,12 +35,15 @@ public class MemberService implements UserDetailsService{
 	@Value("${member.filePath}")
 	private String filePath;
 	
-	//login 메서드 --> Controller는 Spring Security가 알아서 해줌, 따로 호출X
+	// login 메서드 
+	// 개발자가 호출 X  --> Controller는 Spring Security가 알아서 해줌, 따로 호출X
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberVO memberVO = new MemberVO();
+		System.out.println("UserName : " + username);
 		memberVO.setUsername(username);
 		memberVO = memberMapper.getLogin(memberVO);
+		System.out.println("MemberVO : " + memberVO);
 		return memberVO;
 	}
 	
@@ -84,6 +91,7 @@ public class MemberService implements UserDetailsService{
 
 	
 		//join
+		@Transactional(rollbackFor = Exception.class)
 		public int setJoin(MemberVO memberVO, MultipartFile multipartFile) throws Exception{
 			//0. 사전작업 (Security 사용)
 			//a. password 암호화
@@ -97,6 +105,13 @@ public class MemberService implements UserDetailsService{
 			
 			//1. Member Table 저장
 			int result = memberMapper.setJoin(memberVO);
+			
+			//2. Role Table 저장
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("username", memberVO.getUsername());
+			map.put("roleName", "ROLE_MEMBER");
+			result = memberMapper.setMemberRole(map);
+			
 			//2. HDD에 저장
 			String filePath=this.filePath;
 			if(multipartFile.getSize() != 0) {
